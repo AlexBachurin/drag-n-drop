@@ -1,5 +1,6 @@
 //get elems
-const dropArea = document.querySelector('.drag-area');
+const dropArea = document.querySelector('.drag-area'),
+      areaText = document.querySelector('.drag__header');
 
 //global file variable 
 let file;
@@ -10,11 +11,13 @@ const validExtensions = ['image/jpeg', 'image/jpg', 'image/png'];
 dropArea.addEventListener('dragover', (e) => {
     e.preventDefault();
     dropArea.classList.add('area-active')
+    areaText.textContent  = "Release to upload file"
 })
 
 //leave drag area
 dropArea.addEventListener('dragleave', () => {
     dropArea.classList.remove('area-active')
+    areaText.textContent = 'Drag & Drop to Upload File'
 })
 //drop file in area
 dropArea.addEventListener('drop', (e) => {
@@ -36,5 +39,6 @@ dropArea.addEventListener('drop', (e) => {
         fileReader.readAsDataURL(file);
     } else {
         console.log('not valid')
+        dropArea.classList.remove('area-active')
     }
 })
