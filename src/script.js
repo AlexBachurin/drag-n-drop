@@ -1,7 +1,8 @@
 //get elems
 const dropArea = document.querySelector('.drag-area'),
     areaText = document.querySelector('.drag__header'),
-    browseBtn = document.querySelector('.drag__browseBtn');
+    browseBtn = document.querySelector('.drag__browseBtn'),
+    input = dropArea.querySelector('input');
 
 //global file variable 
 let file;
@@ -30,22 +31,38 @@ dropArea.addEventListener('drop', (e) => {
     e.preventDefault();
     //getting file, and if multiple files are selected get only first one
     file = e.dataTransfer.files[0];
-    console.log(file);
+    //show file
+    showFile();
+})
+//browse button 
+browseBtn.addEventListener('click', () => {
+    //when we click on button invoke input click
+    input.click();
+})
+//input functionality
+input.addEventListener('change', () => {
+    //get only first element from input.files
+    file = input.files[0];
+    dropArea.classList.add('area-active')
+    showFile();
+})
+
+
+//function to show file
+function showFile() {
     //get file type
     const fileType = file.type;
-    console.log(fileType)
     if (validExtensions.includes(fileType)) {
         const fileReader = new FileReader()
         fileReader.onload = () => {
             const fileUrl = fileReader.result;
-            console.log(fileUrl);
             const img = `<img src="${fileUrl}">` // create and img tag and pass file url in src
             dropArea.innerHTML = img;
         }
         fileReader.readAsDataURL(file);
     } else {
-        console.log('not valid')
+        alert('this is not an image!')
         dropArea.classList.remove('area-active')
+        areaText.textContent = 'Drag & Drop to Upload File'
     }
-})
-//browse button 
+}
