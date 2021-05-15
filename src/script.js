@@ -1,6 +1,7 @@
 //get elems
 const dropArea = document.querySelector('.drag-area'),
-      areaText = document.querySelector('.drag__header');
+    areaText = document.querySelector('.drag__header'),
+    browseBtn = document.querySelector('.drag__browseBtn');
 
 //global file variable 
 let file;
@@ -11,13 +12,18 @@ const validExtensions = ['image/jpeg', 'image/jpg', 'image/png'];
 dropArea.addEventListener('dragover', (e) => {
     e.preventDefault();
     dropArea.classList.add('area-active')
-    areaText.textContent  = "Release to upload file"
+    areaText.textContent = "Release to upload file"
 })
 
 //leave drag area
-dropArea.addEventListener('dragleave', () => {
-    dropArea.classList.remove('area-active')
-    areaText.textContent = 'Drag & Drop to Upload File'
+dropArea.addEventListener('dragleave', (e) => {
+    const rect = dropArea.getBoundingClientRect();
+    //fix for firing dragLeave when we hover on button
+    //if we outside drag area coords then do things
+    if (e.clientY < rect.top || e.clientY >= rect.bottom || e.clientX <= rect.left || e.clientX >= rect.right) {
+        dropArea.classList.remove('area-active')
+        areaText.textContent = 'Drag & Drop to Upload File'
+    }
 })
 //drop file in area
 dropArea.addEventListener('drop', (e) => {
@@ -42,3 +48,4 @@ dropArea.addEventListener('drop', (e) => {
         dropArea.classList.remove('area-active')
     }
 })
+//browse button 
